@@ -62,8 +62,8 @@ jobs:
     container:
       image: ${{ vars.PRIVATE_RUNTIME_IMAGE || format('ghcr.io/{0}/jobs-private-runtime:latest', github.repository_owner) }}
       credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+        username: ${{ vars.GHCR_USERNAME || github.repository_owner }}
+        password: ${{ secrets.GHCR_READ_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
