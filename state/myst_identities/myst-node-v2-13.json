@@ -1,0 +1,9 @@
+{
+  "worker_id": "myst-node-v2-13",
+  "identity_address": "0xc6b8fbf0b10fc6c47965ea40a687f3951be98d0c",
+  "passphrase_configured": false,
+  "keystore_files": {
+    "UTC--2026-03-23T23-59-07.010939669Z--c6b8fbf0b10fc6c47965ea40a687f3951be98d0c": "{\"address\":\"c6b8fbf0b10fc6c47965ea40a687f3951be98d0c\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"5d37b6a70aeed87a903598399e6052e0ec56ba10c76240bd9f75471406311aa4\",\"cipherparams\":{\"iv\":\"033f461b959532116467ad3598ae7ce4\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":4096,\"p\":6,\"r\":8,\"salt\":\"e0f07beeda53f3b14daa1f6b148d0378dbef6cb81ffde2c3f03c0caac53c89e7\"},\"mac\":\"2a0eb649e4eec2b6a3a0b02bd39c4b247f2844aa57c853547db422998e4de0e3\"},\"id\":\"3487c68c-3d2c-4c87-84d4-53650f147c7a\",\"version\":3}",
+    "remember.json": "{\"identity\":{\"address\":\"0xc6b8fbf0b10fc6c47965ea40a687f3951be98d0c\"}}"
+  }
+}

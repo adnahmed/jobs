@@ -1,0 +1,9 @@
+{
+  "worker_id": "23433891509-1",
+  "identity_address": "0xcff9c3ad9e9b868c2655977e7fcd4f3479ba3223",
+  "passphrase_configured": false,
+  "keystore_files": {
+    "UTC--2026-03-23T10-58-41.654549192Z--cff9c3ad9e9b868c2655977e7fcd4f3479ba3223": "{\"address\":\"cff9c3ad9e9b868c2655977e7fcd4f3479ba3223\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"c3fbbe8893fd543a3949a8ccd37819827b191a92f305c0ed70c2f090533f17c2\",\"cipherparams\":{\"iv\":\"a526f27fef856d455ddc4415288c2861\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":4096,\"p\":6,\"r\":8,\"salt\":\"0c23e698745a858b6afc54c9ff216231930ac4db0fac1b801cb9b5599e903319\"},\"mac\":\"b1263e05dcba9f04c7406febc7a225e8e3526f7a6123fdf99bc5848131b243d4\"},\"id\":\"dd999818-5ff5-4367-a5ac-424b7ec8e934\",\"version\":3}",
+    "remember.json": "{\"identity\":{\"address\":\"0xcff9c3ad9e9b868c2655977e7fcd4f3479ba3223\"}}"
+  }
+}

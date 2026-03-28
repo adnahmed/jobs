@@ -1,0 +1,18 @@
+{
+  "worker_id": "23533400997-1",
+  "run_id": "23534871264-1",
+  "worker_type": "job_alert_scanner",
+  "workflow_file": "slot_01.yml",
+  "workflow_inputs": {
+    "worker_id": "23533400997-1",
+    "scan_scope": "daily-scan",
+    "log_level": "INFO",
+    "worker_import_debug": "false",
+    "debug_ssh": "false",
+    "debug_record": "false",
+    "debug_video": "false",
+    "debug_llm_transcript": "false"
+  },
+  "ref": "refs/heads/master",
+  "recorded_at": "2026-03-25T09:50:46.351382Z"
+}

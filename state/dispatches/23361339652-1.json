@@ -1,0 +1,14 @@
+{
+  "worker_id": "23361339652-1",
+  "run_id": "23361339652-1",
+  "worker_type": "job_alert_scanner",
+  "workflow_file": "slot_01.yml",
+  "workflow_inputs": {
+    "scan_scope": "daily-scan",
+    "log_level": "DEBUG",
+    "worker_import_debug": "true",
+    "debug_record": "true"
+  },
+  "ref": "refs/heads/master",
+  "recorded_at": "2026-03-20T20:30:02.528584Z"
+}

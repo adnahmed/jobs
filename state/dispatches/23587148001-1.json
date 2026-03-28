@@ -1,0 +1,9 @@
+{
+  "worker_id": "23587148001-1",
+  "run_id": "23587148001-1",
+  "worker_type": "job_alert_scanner",
+  "workflow_file": "slot_01.yml",
+  "workflow_inputs": {},
+  "ref": "main",
+  "recorded_at": "2026-03-26T09:31:57.402409Z"
+}
