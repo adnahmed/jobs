@@ -1,0 +1,55 @@
+name: Slot 05 Disabled Placeholder
+
+on:
+  workflow_dispatch:
+    inputs:
+      worker_type:
+        description: "Worker type to run (unused while slot is disabled)"
+        required: false
+        type: string
+      worker_id:
+        description: "Worker identifier (unused while slot is disabled)"
+        required: false
+        type: string
+      shard:
+        description: "Shard/partition value (unused while slot is disabled)"
+        required: false
+        type: string
+      parent_run_id:
+        description: "Parent run identifier (unused while slot is disabled)"
+        required: false
+        type: string
+      correlation_id:
+        description: "Correlation identifier (unused while slot is disabled)"
+        required: false
+        type: string
+      policy_profile:
+        description: "Policy profile (unused while slot is disabled)"
+        required: false
+        type: string
+      debug_record:
+        description: "Enable Playwright trace recording (unused while slot is disabled)"
+        required: false
+        type: string
+      simulation_profile:
+        description: "Simulation profile label (unused while slot is disabled)"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: slot-05-disabled-placeholder
+  cancel-in-progress: false
+
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disabled placeholder slot
+        run: |
+          echo "Slot 05 is a disabled placeholder."
+          echo "Live slots: slot_01 (scanner), slot_02 (applier), slot_03 (myst)."
+          exit 1
+

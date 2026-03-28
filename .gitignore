@@ -1,0 +1,54 @@
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────────────────────
+.venv/
+venv/
+env/
+
+# ── IDE / Editor ───────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Environment / Secrets ──────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+
+# ── Local data ─────────────────────────────────────────────────────────────
+*.sqlite
+*.sqlite3
+*.db
+*.jsonl
+*.jsonl.gz
+
+# ── Postman (may contain tokens — never commit) ───────────────────────────
+*.postman_collection.json
+*.postman_environment.json
+
+# ── OS junk ────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Test / Coverage ────────────────────────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── uv lock (auto-generated) ──────────────────────────────────────────────
+# uv.lock is committed for reproducible builds
+

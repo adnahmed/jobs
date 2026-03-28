@@ -1,0 +1,116 @@
+name: Slot 01
+
+on:
+  schedule:
+    - cron: "30 8 * * *"
+  workflow_dispatch:
+    inputs:
+      worker_id:
+        description: "Optional stable worker identifier for supervisor resume"
+        required: false
+        type: string
+      scan_scope:
+        description: "Scanner run scope label"
+        required: false
+        type: string
+        default: "daily-scan"
+      log_level:
+        description: "Application log level"
+        required: false
+        type: string
+        default: "INFO"
+      worker_import_debug:
+        description: "Enable verbose worker import diagnostics"
+        required: false
+        type: boolean
+        default: false
+      debug_ssh:
+        description: "Enable manual SSH debugging with upterm"
+        required: false
+        type: boolean
+        default: false
+      debug_record:
+        description: "Enable Playwright trace recording"
+        required: false
+        type: boolean
+        default: false
+      debug_video:
+        description: "Enable Playwright video recording (shows mouse movement)"
+        required: false
+        type: boolean
+        default: false
+      debug_llm_transcript:
+        description: "Enable LLM transcript capture (prompts, replies, tool calls)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  packages: read
+
+concurrency:
+  group: slot-01-scanner
+  cancel-in-progress: false
+
+jobs:
+  work:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == github.actor
+    timeout-minutes: 330
+    environment: env-01
+    container:
+      image: ${{ vars.PRIVATE_RUNTIME_IMAGE || format('ghcr.io/{0}/jobs-private-runtime:latest', github.repository_owner) }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Optional SSH debug shell
+        uses: ./.github/actions/setup-slot-debug
+        with:
+          enabled: ${{ inputs.debug_ssh || false }}
+          wait-timeout-minutes: "1"
+          upterm-hostname: ${{ secrets.UPTERM_HOSTNAME }}
+          upterm-gost-username: ${{ secrets.UPTERM_GOST_USERNAME }}
+          upterm-gost-password: ${{ secrets.UPTERM_GOST_PASSWORD }}
+
+      - name: Free disk space
+        uses: endersonmenezes/free-disk-space@713d134e243b926eba4a5cce0cf608bfd1efb89a # v2
+        with:
+          remove_android: true
+          remove_dotnet: true
+          remove_haskell: true
+
+      - name: Run slot worker
+        run: python -m src worker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
+          LINKEDIN_COOKIES: ${{ secrets.LINKEDIN_COOKIES }}
+          WORKER_TYPE: "job_alert_scanner"
+          WORKER_ID: ${{ inputs.worker_id || '' }}
+          SHARD: ${{ inputs.scan_scope || 'daily-scan' }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          PROXY_HOST: ${{ secrets.PROXY_HOST }}
+          PROXY_PORT: ${{ secrets.PROXY_PORT }}
+          PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+          DB_ENCRYPTION_KEY: ${{ secrets.DB_ENCRYPTION_KEY }}
+          DATA_ENCRYPTION_KEY: ${{ secrets.DATA_ENCRYPTION_KEY }}
+          ACTIVATION_DATE: ${{ secrets.ACTIVATION_DATE }}
+          APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
+          WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
+          PLAYWRIGHT_DEBUG_RECORD: ${{ inputs.debug_record || 'false' }}
+          PLAYWRIGHT_DEBUG_VIDEO: ${{ inputs.debug_video || 'false' }}
+          PLAYWRIGHT_DEBUG_LLM_TRANSCRIPT: ${{ inputs.debug_llm_transcript || 'false' }}
+          PLAYWRIGHT_DEBUG_DIR: /tmp/playwright-debug
+
+      - name: Upload browser debug recordings
+        if: ${{ always() }}
+        uses: ./.github/actions/upload-slot-debug
+        with:
+          artifact-name: playwright-debug-${{ github.run_id }}-slot-01-scanner
+

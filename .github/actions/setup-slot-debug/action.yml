@@ -1,0 +1,118 @@
+name: Setup Slot Debug Shell
+description: Start an optional upterm SSH session for manual GitHub Actions debugging.
+
+inputs:
+  enabled:
+    description: Enable the SSH debug session
+    required: false
+    default: "false"
+  wait-timeout-minutes:
+    description: Minutes to wait for a debug connection before the session shuts down
+    required: false
+    default: "15"
+  upterm-hostname:
+    description: Cloudflare hostname exposing the remote uptermd server
+    required: false
+    default: ""
+  upterm-gost-username:
+    description: Username used by gost to reach the remote SSH forward target
+    required: false
+    default: ""
+  upterm-gost-password:
+    description: Password used by gost to reach the remote SSH forward target
+    required: false
+    default: ""
+  upterm-host-extra-args:
+    description: >-
+      Raw extra arguments appended to the upterm host command. For port
+      forwarding, allowlist host-side targets with repeated --permit-open
+      127.0.0.1:4449 --permit-open 127.0.0.1:4450, then connect locally with
+      ssh -L 4449:127.0.0.1:4449 -L 4450:127.0.0.1:4450 TOKEN@HOST
+    required: false
+    default: ""
+
+outputs:
+  ssh-command:
+    description: SSH command emitted by the upterm action
+    value: ${{ steps.upterm.outputs.ssh-command }}
+
+runs:
+  using: composite
+  steps:
+    - name: Setup custom upterm transport
+      id: transport
+      if: ${{ inputs.enabled == 'true' }}
+      uses: ./.github/actions/setup-slot-debug-transport
+      with:
+        enabled: ${{ inputs.enabled }}
+        upterm-hostname: ${{ inputs.upterm-hostname }}
+        upterm-gost-username: ${{ inputs.upterm-gost-username }}
+        upterm-gost-password: ${{ inputs.upterm-gost-password }}
+
+    - name: Start SSH debug shell
+      id: upterm
+      if: ${{ inputs.enabled == 'true' }}
+      uses: adnahmed/action-upterm@main
+      with:
+        limit-access-to-actor: true
+        detached: true
+        wait-timeout-minutes: ${{ inputs.wait-timeout-minutes }}
+        upterm-server: ${{ steps.transport.outputs.server_url }}
+        upterm-host-extra-args: ${{ inputs.upterm-host-extra-args }}
+
+    - name: Show SSH debug connection details
+      if: ${{ inputs.enabled == 'true' }}
+      shell: bash
+      run: |
+        host_extra_args=$(cat <<'EOF'
+        ${{ inputs.upterm-host-extra-args }}
+        EOF
+        )
+
+        forwarding_guidance=""
+        if [[ -n "$host_extra_args" ]]; then
+          permit_open_targets=$(printf '%s\n' "$host_extra_args" | grep -oE -- '--permit-open[[:space:]]+[^[:space:]]+' | awk '{print $2}' || true)
+          if [[ -n "$permit_open_targets" ]]; then
+            base_command="${{ steps.upterm.outputs.ssh-command }}"
+            forward_flags=()
+            while IFS= read -r target; do
+              [[ -n "$target" ]] || continue
+              host=${target%:*}
+              port=${target##*:}
+              if [[ -n "$host" && -n "$port" && "$port" != "$target" ]]; then
+                forward_flags+=("-L ${port}:${host}:${port}")
+              fi
+            done <<< "$permit_open_targets"
+
+            if (( ${#forward_flags[@]} > 0 )); then
+              forwarded_command="${base_command/ssh /ssh ${forward_flags[*]} }"
+              forwarding_guidance=$(cat <<EOF
+
+        Port forwarding:
+        Host-side allowlisting via upterm-host-extra-args:
+        $host_extra_args
+
+        Local client usage:
+        $forwarded_command
+        EOF
+              )
+            fi
+          fi
+        fi
+
+        instructions=$(cat <<EOF
+        Slot debug custom upterm server is ready.
+
+        Client setup:
+        cloudflared access tcp --hostname "$UPTERM_HOSTNAME" --url localhost:${{ steps.transport.outputs.cf_local_port }}
+        gost -L tcp://127.0.0.1:${{ steps.transport.outputs.upterm_local_port }} -F forward+ssh://$UPTERM_GOST_USERNAME:$UPTERM_GOST_PASSWORD@127.0.0.1:${{ steps.transport.outputs.cf_local_port }}
+
+        Then connect with:
+        ${{ steps.upterm.outputs.ssh-command }}$forwarding_guidance
+        EOF
+        )
+
+        printf '%s\n' "$instructions"
+        if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+          printf '%s\n' "$instructions" >> "$GITHUB_STEP_SUMMARY"
+        fi

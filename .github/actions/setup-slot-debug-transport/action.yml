@@ -1,0 +1,33 @@
+name: Setup Slot Debug Transport
+description: Start the local Cloudflare and gost chain used to reach a custom upterm server.
+
+inputs:
+  enabled:
+    description: Enable the transport bootstrap
+    required: false
+    default: "false"
+  upterm-hostname:
+    description: Cloudflare hostname exposing the remote uptermd server
+    required: false
+    default: ""
+  upterm-gost-username:
+    description: Username used by gost to reach the remote SSH forward target
+    required: false
+    default: ""
+  upterm-gost-password:
+    description: Password used by gost to reach the remote SSH forward target
+    required: false
+    default: ""
+
+outputs:
+  server_url:
+    description: Local custom upterm server URL for action-upterm
+  cf_local_port:
+    description: Local Cloudflare Access TCP forwarding port
+  upterm_local_port:
+    description: Local gost forwarding port for upterm
+
+runs:
+  using: node20
+  main: index.js
+  post: index.js

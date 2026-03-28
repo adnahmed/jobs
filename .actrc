@@ -1,0 +1,11 @@
+# act configuration — nektos/act local workflow runner
+# https://github.com/nektos/act
+
+# Use medium Ubuntu image (includes common tools)
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+
+# Reuse containers for faster iteration
+--reuse
+
+# Default event
+--eventpath .github/act-event.json

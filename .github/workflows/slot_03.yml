@@ -1,0 +1,155 @@
+name: Slot 03
+
+on:
+  workflow_dispatch:
+    inputs:
+      replicas_json:
+        description: "JSON array of slot replicas, e.g. [{\"worker_id\":\"myst-node-v2-01\",\"shard\":\"myst\"}]"
+        required: true
+        type: string
+      log_level:
+        description: "Application log level"
+        required: false
+        type: string
+        default: "INFO"
+      worker_import_debug:
+        description: "Enable verbose worker import diagnostics"
+        required: false
+        type: boolean
+        default: false
+      debug_ssh:
+        description: "Enable manual SSH debugging with upterm"
+        required: false
+        type: boolean
+        default: false
+      debug_record:
+        description: "Enable Playwright trace recording"
+        required: false
+        type: boolean
+        default: false
+      debug_video:
+        description: "Enable Playwright video recording (shows mouse movement)"
+        required: false
+        type: boolean
+        default: false
+      debug_llm_transcript:
+        description: "Enable LLM transcript capture (prompts, replies, tool calls)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: slot-03-myst-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  work:
+    name: ${{ matrix.replica.worker_id }}
+    runs-on: ubuntu-latest
+    if: github.repository_owner == github.actor
+    timeout-minutes: 330
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: ${{ fromJSON(inputs.replicas_json) }}
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT }}
+
+      - name: Optional SSH debug shell
+        uses: ./.github/actions/setup-slot-debug
+        continue-on-error: true
+        with:
+          enabled: ${{ inputs.debug_ssh || false }}
+          wait-timeout-minutes: "1"
+          upterm-hostname: ${{ secrets.UPTERM_HOSTNAME }}
+          upterm-gost-username: ${{ secrets.UPTERM_GOST_USERNAME }}
+          upterm-gost-password: ${{ secrets.UPTERM_GOST_PASSWORD }}
+          upterm-host-extra-args: >-
+            --permit-open 127.0.0.1:4449
+            --permit-open 127.0.0.1:4450
+
+      - name: Free disk space
+        uses: endersonmenezes/free-disk-space@713d134e243b926eba4a5cce0cf608bfd1efb89a # v2
+        with:
+          remove_android: true
+          remove_dotnet: true
+          remove_haskell: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Sync task dependencies
+        run: uv sync --project "$GITHUB_WORKSPACE/tasks" --frozen --extra tasks
+
+      - name: Install Playwright ffmpeg for debug video
+        if: ${{ inputs.debug_video }}
+        run: uv run --project "$GITHUB_WORKSPACE/tasks" playwright install ffmpeg
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/ms-playwright
+
+      - name: Prepare Myst TUN device
+        run: |
+          sudo modprobe tun
+          sudo mkdir -p /dev/net
+          if [ ! -c /dev/net/tun ]; then
+            sudo mknod /dev/net/tun c 10 200
+          fi
+          sudo chmod 666 /dev/net/tun
+          ls -l /dev/net/tun
+
+      - name: Verify Docker daemon
+        run: docker info
+
+      - name: Run slot worker
+        run: uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
+          WORKER_TYPE: "myst_node"
+          SUPERVISOR_TARGET_COUNT: "21"
+          SUPERVISOR_REPLICA_COUNT: "2"
+          SUPERVISOR_DISPATCH_MODE: "fixed"
+          SUPERVISOR_SHARD: "myst"
+          SUPERVISOR_WORKER_ID_PREFIX: "myst-node-v2"
+          SUPERVISOR_MIN_CONCURRENCY: "1"
+          SUPERVISOR_CAPACITY_WEIGHT: "1"
+          WORKER_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.replica.worker_id }}
+          WORKER_ID: ${{ matrix.replica.worker_id }}
+          SHARD: ${{ matrix.replica.shard }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          WORKFLOW_JOB_NAME: ${{ matrix.replica.worker_id }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          DB_ENCRYPTION_KEY: ${{ secrets.DB_ENCRYPTION_KEY }}
+          DATA_ENCRYPTION_KEY: ${{ secrets.DATA_ENCRYPTION_KEY }}
+          ACTIVATION_DATE: ${{ secrets.ACTIVATION_DATE }}
+          MYST_API_KEY: ${{ secrets['MYST_API_KEY'] }}
+          MYST_COOKIES: ${{ secrets['MYST_COOKIES'] }}
+          MYST_CONTAINER_NETWORK_MODE: "host"
+          MYST_EMAIL: ${{ secrets['MYST_EMAIL'] }}
+          MYST_IDENTITY_PASSPHRASE: ${{ secrets['MYST_IDENTITY_PASSPHRASE'] }}
+          MYST_PASSWORD: ${{ secrets['MYST_PASSWORD'] }}
+          APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
+          WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
+          PLAYWRIGHT_DEBUG_RECORD: ${{ inputs.debug_record || 'false' }}
+          PLAYWRIGHT_DEBUG_VIDEO: ${{ inputs.debug_video || 'false' }}
+          PLAYWRIGHT_DEBUG_LLM_TRANSCRIPT: ${{ inputs.debug_llm_transcript || 'false' }}
+          PLAYWRIGHT_DEBUG_DIR: /tmp/playwright-debug
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/ms-playwright
+
+      - name: Upload browser debug recordings
+        if: ${{ always() }}
+        uses: ./.github/actions/upload-slot-debug
+        with:
+          artifact-name: playwright-debug-${{ github.run_id }}-slot-03-myst-${{ matrix.replica.worker_id }}
