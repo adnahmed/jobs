@@ -57,9 +57,6 @@ jobs:
         replica: ${{ fromJSON(inputs.replicas_json) }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-        with:
-          submodules: recursive
-          token: ${{ secrets.SUBMODULE_PAT }}
 
       - name: Optional SSH debug shell
         uses: ./.github/actions/setup-slot-debug
