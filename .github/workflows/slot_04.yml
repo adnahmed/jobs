@@ -66,6 +66,72 @@ jobs:
           chmod +x /usr/local/bin/cloudflared
           cloudflared --version
 
+      - name: Install gost
+        run: |
+          python - <<'PY'
+          import io
+          import json
+          import os
+          import stat
+          import tarfile
+          import urllib.request
+
+          release_url = "https://api.github.com/repos/go-gost/gost/releases/latest"
+          request = urllib.request.Request(
+              release_url,
+              headers={
+                  "accept": "application/vnd.github+json",
+                  "user-agent": "slot-04-gost-installer",
+              },
+          )
+          with urllib.request.urlopen(request) as response:
+              release = json.load(response)
+
+          asset_url = ""
+          for asset in release.get("assets", []):
+              name = str(asset.get("name", "") or "")
+              if name.startswith("gost_") and name.endswith("_linux_amd64.tar.gz"):
+                  asset_url = str(asset.get("browser_download_url", "") or "")
+                  break
+          if not asset_url:
+              raise SystemExit("could not find gost Linux amd64 release asset")
+
+          with urllib.request.urlopen(asset_url) as response:
+              archive = response.read()
+
+          member_name = ""
+          member_data = b""
+          with tarfile.open(fileobj=io.BytesIO(archive), mode="r:gz") as tar:
+              for member in tar.getmembers():
+                  if not member.isfile():
+                      continue
+                  if member.name == "gost" or member.name.endswith("/gost"):
+                      extracted = tar.extractfile(member)
+                      if extracted is None:
+                          continue
+                      member_name = member.name
+                      member_data = extracted.read()
+                      break
+          if not member_data:
+              raise SystemExit("could not extract gost binary from release archive")
+
+          destination = "/usr/local/bin/gost"
+          with open(destination, "wb") as handle:
+              handle.write(member_data)
+          os.chmod(
+              destination,
+              stat.S_IRUSR
+              | stat.S_IWUSR
+              | stat.S_IXUSR
+              | stat.S_IRGRP
+              | stat.S_IXGRP
+              | stat.S_IROTH
+              | stat.S_IXOTH,
+          )
+          print(f"installed {member_name} to {destination}")
+          PY
+          gost -V || gost -h >/dev/null
+
       - name: Run relay worker
         run: uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
         env:
@@ -85,4 +151,6 @@ jobs:
           DATA_ENCRYPTION_KEY: ${{ secrets.DATA_ENCRYPTION_KEY }}
           APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
           WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
+          RELAY_USERNAME: ${{ secrets.RELAY_USERNAME }}
+          RELAY_PASSWORD: ${{ secrets.RELAY_PASSWORD }}
           RELAY_CLOUDFLARE_TUNNEL_TOKEN: ${{ matrix.replica.handoff_target_id == 'relay-a' && secrets.RELAY_A_TUNNEL_TOKEN || matrix.replica.handoff_target_id == 'relay-b' && secrets.RELAY_B_TUNNEL_TOKEN || secrets.RELAY_TUNNEL_TOKEN }}
