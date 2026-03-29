@@ -6,9 +6,9 @@
   "workflow_job_id": "",
   "workflow_job_name": "myst-node-v2-04",
   "worker_type": "myst_node",
-  "last_seen": "2026-03-29T14:12:15.992635Z",
+  "last_seen": "2026-03-29T14:15:16.944463Z",
   "phase": "working",
-  "progress": "events:227",
+  "progress": "events:229",
   "actions_today": 0,
   "shard": "myst",
   "slot_id": ""
