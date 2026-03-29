@@ -1,0 +1,11 @@
+{
+  "worker_id": "23705651054-1",
+  "worker_type": "job_alert_scanner",
+  "shard": "daily-scan",
+  "workflow_run_id": "",
+  "workflow_run_attempt": "",
+  "workflow_job_id": "",
+  "workflow_job_name": "",
+  "run_id": "",
+  "requested_at": "2026-03-29T10:52:20.282755Z"
+}
