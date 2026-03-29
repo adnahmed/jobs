@@ -1,13 +1,15 @@
 {
   "worker_id": "23705651054-1",
   "run_id": "23705651054-1",
-  "workflow_run_id": "23705651054",
+  "workflow_run_id": "23706094807",
   "workflow_run_attempt": "1",
   "workflow_job_id": "",
-  "workflow_job_name": "work",
+  "workflow_job_name": "23705651054-1",
   "worker_type": "job_alert_scanner",
   "workflow_file": "slot_01.yml",
-  "workflow_inputs": {},
+  "workflow_inputs": {
+    "worker_id": "23705651054-1"
+  },
   "ref": "main",
-  "recorded_at": "2026-03-29T09:04:24.228666Z"
+  "recorded_at": "2026-03-29T09:31:17.047700+00:00"
 }
