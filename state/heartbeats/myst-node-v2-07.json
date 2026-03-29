@@ -6,7 +6,7 @@
   "workflow_job_id": "",
   "workflow_job_name": "myst-node-v2-07",
   "worker_type": "myst_node",
-  "last_seen": "2026-03-29T09:54:47.275505Z",
+  "last_seen": "2026-03-29T09:57:49.521731Z",
   "phase": "working",
   "progress": "events:167",
   "actions_today": 0,
