@@ -1,55 +1,113 @@
-name: Slot 04 Disabled Placeholder
+name: Slot 04
 
 on:
   workflow_dispatch:
     inputs:
-      worker_type:
-        description: "Worker type to run (unused while slot is disabled)"
-        required: false
-        type: string
       worker_id:
-        description: "Worker identifier (unused while slot is disabled)"
+        description: "Relay instance identifier"
+        required: true
+        type: string
+      lane_id:
+        description: "Stable relay lane identity"
+        required: true
+        type: string
+      peer_url:
+        description: "Stable public peer URL for this lane"
+        required: true
+        type: string
+      peer_urls_json:
+        description: "JSON array of stable relay peer URLs for all lanes"
+        required: true
+        type: string
+      predecessor_instance_id:
+        description: "Predecessor relay instance currently serving this lane"
         required: false
         type: string
-      shard:
-        description: "Shard/partition value (unused while slot is disabled)"
+        default: ""
+      handoff_generation:
+        description: "Supervisor-owned successor generation counter"
+        required: false
+        type: number
+        default: 0
+      log_level:
+        description: "Application log level"
         required: false
         type: string
-      parent_run_id:
-        description: "Parent run identifier (unused while slot is disabled)"
+        default: "INFO"
+      worker_import_debug:
+        description: "Enable verbose worker import diagnostics"
         required: false
-        type: string
-      correlation_id:
-        description: "Correlation identifier (unused while slot is disabled)"
-        required: false
-        type: string
-      policy_profile:
-        description: "Policy profile (unused while slot is disabled)"
-        required: false
-        type: string
-      debug_record:
-        description: "Enable Playwright trace recording (unused while slot is disabled)"
-        required: false
-        type: string
-      simulation_profile:
-        description: "Simulation profile label (unused while slot is disabled)"
-        required: false
-        type: string
+        type: boolean
+        default: false
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: slot-04-disabled-placeholder
+  group: slot-04-relay-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
-  disabled:
+  work:
+    name: ${{ inputs.worker_id }}
     runs-on: ubuntu-latest
+    if: github.repository_owner == github.actor
+    timeout-minutes: 330
     steps:
-      - name: Disabled placeholder slot
-        run: |
-          echo "Slot 04 is a disabled placeholder."
-          echo "Live slots: slot_01 (scanner), slot_02 (applier), slot_03 (myst)."
-          exit 1
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.SUBMODULE_PAT || secrets.GITHUB_TOKEN }}
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Sync relay worker dependencies
+        run: uv sync --project "$GITHUB_WORKSPACE/tasks" --frozen
+
+      - name: Install relay npm dependencies
+        run: npm install --no-fund --no-audit
+        working-directory: ${{ github.workspace }}/tasks/shared-state-relay
+
+      - name: Install cloudflared
+        run: |
+          curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 \
+            -o /usr/local/bin/cloudflared
+          chmod +x /usr/local/bin/cloudflared
+          cloudflared --version
+
+      - name: Run relay worker
+        run: uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
+          WORKER_TYPE: "shared_state_relay"
+          WORKER_TIMEOUT_MINUTES: "330"
+          WORKER_RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.worker_id }}
+          WORKER_ID: ${{ inputs.worker_id }}
+          SHARD: ${{ inputs.lane_id }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          WORKFLOW_JOB_NAME: ${{ inputs.worker_id }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          DB_ENCRYPTION_KEY: ${{ secrets.DB_ENCRYPTION_KEY }}
+          DATA_ENCRYPTION_KEY: ${{ secrets.DATA_ENCRYPTION_KEY }}
+          APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
+          WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
+          RELAY_LANE_ID: ${{ inputs.lane_id }}
+          RELAY_PEER_URL: ${{ inputs.peer_url }}
+          RELAY_PEER_URLS_JSON: ${{ inputs.peer_urls_json }}
+          RELAY_PREDECESSOR_INSTANCE_ID: ${{ inputs.predecessor_instance_id }}
+          RELAY_HANDOFF_GENERATION: ${{ inputs.handoff_generation }}
+          RELAY_LANE_A_PEER_URL: ${{ vars.RELAY_LANE_A_PEER_URL || '' }}
+          RELAY_LANE_B_PEER_URL: ${{ vars.RELAY_LANE_B_PEER_URL || '' }}
+          RELAY_CLOUDFLARE_TUNNEL_TOKEN: ${{ inputs.lane_id == 'relay-a' && secrets.RELAY_A_TUNNEL_TOKEN || inputs.lane_id == 'relay-b' && secrets.RELAY_B_TUNNEL_TOKEN || secrets.RELAY_TUNNEL_TOKEN }}
