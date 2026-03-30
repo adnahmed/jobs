@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/accounts",
   "record_id": "slmkhanahmed",
-  "revision": 56,
+  "revision": 57,
   "status": "saturated",
   "payload": {
     "account_id": "slmkhanahmed",
@@ -13,15 +13,15 @@
     "status": "saturated",
     "source": "bootstrap",
     "created_by": "myst-node-v2-01",
-    "saturated_reason": "MystNodes account reached the free node registration limit and requires the standard onboarding flow.",
+    "saturated_reason": "Account has reached the free node registration limit and standard onboarding is required to register the node.",
     "failure_reason": "",
     "created_at": "2026-03-30T06:21:53.344162+00:00",
-    "updated_at": "2026-03-30T16:25:13.174479+00:00"
+    "updated_at": "2026-03-30T16:25:28.878110+00:00"
   },
-  "secrets_encrypted": "+nKvzrAlmUtwURo2snyBvu03M5zB9AETrSULZyf54/yrZnCOQ0DhSukR3ZxzRMGF",
-  "owner": "myst-node-v2-11",
+  "secrets_encrypted": "3jdihe1ZUewkEqYf0kFMwUDYz6tnIkIoMbJN8fbPu+IMeYvSSaFdwmw2g/MgKikf",
+  "owner": "myst-node-v2-09",
   "created_at": "2026-03-30T06:21:54.780456Z",
-  "updated_at": "2026-03-30T16:25:13.174611Z",
+  "updated_at": "2026-03-30T16:25:28.878246Z",
   "lease": null,
   "tags": [
     "myst",
