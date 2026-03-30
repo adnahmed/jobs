@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "namespace": "myst/accounts",
+  "record_id": "myst-0ab2afa9a3fb7330",
+  "revision": 1,
+  "status": "provisioning",
+  "payload": {
+    "account_id": "myst-0ab2afa9a3fb7330",
+    "full_email": "myst-0ab2afa9a3fb7330@adnahmed.us.kg",
+    "wallet_index": 42,
+    "wallet_address": "0xfefDAedCbE5810b0Fa0C31C2C1eD358D7147A4C9",
+    "generation": 1,
+    "status": "provisioning",
+    "source": "generated",
+    "created_by": "myst-node-v2-15",
+    "saturated_reason": "",
+    "failure_reason": "",
+    "created_at": "2026-03-30T21:26:21.779965+00:00",
+    "updated_at": "2026-03-30T21:26:21.779969+00:00"
+  },
+  "secrets_encrypted": "Gyx0je3gUCMgbaTcu6klklC2kyY6Pqnrfd8/f8UsYCBKqb0PmNtLeae0/7sk442c45ILpX6Fw9BJaZYy9BtC/Q==",
+  "owner": "myst-node-v2-15",
+  "created_at": "2026-03-30T21:26:21.928188Z",
+  "updated_at": "2026-03-30T21:26:21.928259Z",
+  "lease": null,
+  "tags": [
+    "myst",
+    "account_pool"
+  ],
+  "metadata": {
+    "full_email": "myst-0ab2afa9a3fb7330@adnahmed.us.kg",
+    "wallet_index": 42,
+    "wallet_address": "0xfefDAedCbE5810b0Fa0C31C2C1eD358D7147A4C9",
+    "generation": 1,
+    "source": "generated"
+  }
+}
