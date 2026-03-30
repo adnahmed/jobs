@@ -1,21 +1,19 @@
 {
   "worker_id": "myst-node-v2-21",
   "run_id": "23663960822-3-myst-node-v2-21",
-  "workflow_run_id": "23663960822",
-  "workflow_run_attempt": "3",
-  "workflow_job_id": "68953034623",
+  "workflow_run_id": "23737086203",
+  "workflow_run_attempt": "1",
+  "workflow_job_id": "69144430673",
   "workflow_job_name": "myst-node-v2-21",
   "worker_type": "myst_node",
   "workflow_file": "slot_03.yml",
   "workflow_inputs": {
-    "replicas_json": "[{\"worker_id\":\"myst-node-v2-21\",\"shard\":\"myst\"}]",
-    "log_level": "INFO",
-    "worker_import_debug": "false",
-    "debug_ssh": "true",
-    "debug_record": "true",
-    "debug_video": "true",
-    "debug_llm_transcript": "true"
+    "replicas_json": "[{\"worker_id\":\"myst-node-v2-21\",\"shard\":\"myst\"}]"
   },
-  "ref": "refs/heads/master",
-  "recorded_at": "2026-03-27T21:07:19.847316Z"
+  "ref": "master",
+  "handoff_target_id": "",
+  "handoff_instance_id": "",
+  "handoff_predecessor_instance_id": "",
+  "handoff_successor_instance_id": "",
+  "recorded_at": "2026-03-30T09:13:27.585304+00:00"
 }
