@@ -1,0 +1,74 @@
+name: "Save Wallet Profile"
+description: "Encrypt and upload a Chromium wallet profile back to R2"
+
+inputs:
+  account-id:
+    description: "Profile account ID (e.g. wallet-myst-node-v2-01)"
+    required: true
+  profile-dir:
+    description: "Path to the profile directory to archive"
+    required: true
+  r2-account-id:
+    description: "Cloudflare R2 account ID"
+    required: true
+  aws-access-key-id:
+    description: "AWS-compatible access key for R2"
+    required: true
+  aws-secret-access-key:
+    description: "AWS-compatible secret key for R2"
+    required: true
+  profile-passphrase:
+    description: "GPG passphrase for profile encryption"
+    required: true
+  r2-bucket:
+    description: "R2 bucket name"
+    required: false
+    default: "pw-profiles"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Archive and encrypt profile
+      shell: bash
+      run: |
+        PROFILE_DIR="${{ inputs.profile-dir }}"
+        TAR_PATH="/tmp/${{ inputs.account-id }}.tar"
+        ARCHIVE_PATH="/tmp/${{ inputs.account-id }}.tar.gpg"
+
+        if [ ! -d "${PROFILE_DIR}" ]; then
+          echo "::warning::Profile directory does not exist: ${PROFILE_DIR}"
+          exit 0
+        fi
+
+        echo "Archiving profile..."
+        tar --zstd -cf "${TAR_PATH}" -C "${PROFILE_DIR}" .
+
+        echo "Encrypting archive..."
+        gpg --batch --yes \
+          --passphrase "${{ inputs.profile-passphrase }}" \
+          --symmetric \
+          --cipher-algo AES256 \
+          --output "${ARCHIVE_PATH}" \
+          "${TAR_PATH}"
+
+        rm -f "${TAR_PATH}"
+        echo "Encrypted archive: $(stat -c%s "${ARCHIVE_PATH}") bytes"
+
+    - name: Upload encrypted profile to R2
+      shell: bash
+      env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+      run: |
+        ENDPOINT="https://${{ inputs.r2-account-id }}.r2.cloudflarestorage.com"
+        ARCHIVE_PATH="/tmp/${{ inputs.account-id }}.tar.gpg"
+
+        echo "Uploading encrypted profile to R2..."
+        aws s3 cp \
+          "${ARCHIVE_PATH}" \
+          "s3://${{ inputs.r2-bucket }}/${{ inputs.account-id }}.tar.gpg" \
+          --endpoint-url "${ENDPOINT}" \
+          --no-progress
+
+        rm -f "${ARCHIVE_PATH}"
+        echo "Profile uploaded successfully"

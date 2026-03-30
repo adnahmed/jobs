@@ -90,11 +90,43 @@ jobs:
         with:
           python-version: "3.12"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Install uv
         run: python -m pip install --upgrade pip uv
 
       - name: Sync task dependencies
         run: uv sync --project "$GITHUB_WORKSPACE/tasks" --frozen --extra tasks
+
+      - name: Install Synpress sidecar
+        run: npm ci
+        working-directory: tasks/tasks/wallet/synpress-sidecar
+
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
+
+      - name: Download MetaMask extension
+        run: |
+          mkdir -p /opt/metamask-extension
+          METAMASK_VERSION="${METAMASK_EXTENSION_VERSION:-12.8.1}"
+          curl -sL "https://github.com/nickstenning/metamask-extension/releases/download/v${METAMASK_VERSION}/metamask-chrome-${METAMASK_VERSION}.zip" -o /tmp/metamask.zip || true
+          if [ -f /tmp/metamask.zip ]; then
+            unzip -q /tmp/metamask.zip -d /opt/metamask-extension
+          else
+            echo "::warning::MetaMask extension download failed; sidecar will attempt to locate it"
+          fi
+
+      - name: Setup wallet profile
+        id: wallet-profile
+        uses: ./.github/actions/setup-wallet-profile
+        with:
+          account-id: wallet-${{ matrix.replica.worker_id }}
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          profile-passphrase: ${{ secrets.PROFILE_PASSPHRASE }}
 
       - name: Install Playwright ffmpeg for debug video
         if: ${{ inputs.debug_video }}
@@ -116,7 +148,7 @@ jobs:
         run: docker info
 
       - name: Run slot worker
-        run: uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+        run: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
@@ -140,15 +172,13 @@ jobs:
           DATA_ENCRYPTION_KEY: ${{ secrets.DATA_ENCRYPTION_KEY }}
           ACTIVATION_DATE: ${{ secrets.ACTIVATION_DATE }}
           MYST_API_KEY: ${{ secrets['MYST_API_KEY'] }}
-          MYST_COOKIES: ${{ secrets['MYST_COOKIES'] }}
           MYST_CONTAINER_NETWORK_MODE: "host"
-          MYST_EMAIL: ${{ secrets['MYST_EMAIL'] }}
           MYST_IDENTITY_PASSPHRASE: ${{ secrets['MYST_IDENTITY_PASSPHRASE'] }}
-          MYST_PASSWORD: ${{ secrets['MYST_PASSWORD'] }}
-          EMAIL_WORKER_DOMAIN: ${{ secrets['EMAIL_WORKER_DOMAIN'] }}
-          EMAIL_API_KEY: ${{ secrets['EMAIL_API_KEY'] }}
-          EMAIL_DOMAIN: ${{ secrets['EMAIL_DOMAIN'] }}
-          SEED_PHRASE: ${{ secrets['SEED_PHRASE'] }}
+          # Wallet profile environment
+          WALLET_PROFILE_DIR: ${{ steps.wallet-profile.outputs.profile-dir }}
+          WALLET_ACCOUNT_ID: wallet-${{ matrix.replica.worker_id }}
+          METAMASK_PASSWORD: ${{ secrets.METAMASK_PASSWORD }}
+          METAMASK_EXTENSION_PATH: /opt/metamask-extension
           APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
           WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
           PLAYWRIGHT_DEBUG_RECORD: ${{ inputs.debug_record || 'false' }}

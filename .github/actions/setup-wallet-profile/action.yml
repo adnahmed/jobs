@@ -1,0 +1,93 @@
+name: "Setup Wallet Profile"
+description: "Download and decrypt an encrypted Chromium wallet profile from R2"
+
+inputs:
+  account-id:
+    description: "Profile account ID (e.g. wallet-myst-node-v2-01)"
+    required: true
+  r2-account-id:
+    description: "Cloudflare R2 account ID"
+    required: true
+  aws-access-key-id:
+    description: "AWS-compatible access key for R2"
+    required: true
+  aws-secret-access-key:
+    description: "AWS-compatible secret key for R2"
+    required: true
+  profile-passphrase:
+    description: "GPG passphrase for profile decryption"
+    required: true
+  r2-bucket:
+    description: "R2 bucket name"
+    required: false
+    default: "pw-profiles"
+  profiles-root:
+    description: "Local directory to extract profiles into"
+    required: false
+    default: "/tmp/pw-profiles"
+
+outputs:
+  profile-dir:
+    description: "Path to the extracted profile directory"
+    value: ${{ steps.extract.outputs.profile-dir }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: |
+        if ! command -v aws &> /dev/null; then
+          pip install awscli
+        fi
+        if ! command -v gpg &> /dev/null; then
+          sudo apt-get update && sudo apt-get install -y gnupg
+        fi
+
+    - name: Download encrypted profile from R2
+      shell: bash
+      env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+      run: |
+        ENDPOINT="https://${{ inputs.r2-account-id }}.r2.cloudflarestorage.com"
+        ARCHIVE_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar.gpg"
+        mkdir -p "${{ inputs.profiles-root }}"
+
+        echo "Downloading profile archive from R2..."
+        aws s3 cp \
+          "s3://${{ inputs.r2-bucket }}/${{ inputs.account-id }}.tar.gpg" \
+          "${ARCHIVE_PATH}" \
+          --endpoint-url "${ENDPOINT}" \
+          --no-progress
+
+        if [ ! -f "${ARCHIVE_PATH}" ]; then
+          echo "::error::Profile archive not found in R2"
+          exit 1
+        fi
+        echo "Downloaded $(stat -c%s "${ARCHIVE_PATH}") bytes"
+
+    - name: Decrypt and extract profile
+      id: extract
+      shell: bash
+      run: |
+        ARCHIVE_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar.gpg"
+        TAR_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar"
+        PROFILE_DIR="${{ inputs.profiles-root }}/${{ inputs.account-id }}"
+
+        echo "Decrypting profile archive..."
+        gpg --batch --yes \
+          --passphrase "${{ inputs.profile-passphrase }}" \
+          --output "${TAR_PATH}" \
+          --decrypt "${ARCHIVE_PATH}"
+
+        echo "Extracting profile..."
+        rm -rf "${PROFILE_DIR}"
+        mkdir -p "${PROFILE_DIR}"
+        tar --zstd -xf "${TAR_PATH}" -C "${PROFILE_DIR}"
+
+        # Cleanup temp files
+        rm -f "${ARCHIVE_PATH}" "${TAR_PATH}"
+
+        echo "Profile ready at ${PROFILE_DIR}"
+        echo "profile-dir=${PROFILE_DIR}" >> "$GITHUB_OUTPUT"
