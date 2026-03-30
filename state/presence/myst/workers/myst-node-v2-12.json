@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/workers",
   "actor_id": "myst-node-v2-12",
-  "revision": 213,
+  "revision": 214,
   "status": "working",
   "owner": "myst-node-v2-12",
   "payload": {
@@ -17,6 +17,6 @@
     "serving": false
   },
   "metadata": {},
-  "observed_at": "2026-03-30T05:37:28.392639Z",
-  "expires_at": "2026-03-30T05:47:28.392639Z"
+  "observed_at": "2026-03-30T05:40:30.839101Z",
+  "expires_at": "2026-03-30T05:50:30.839101Z"
 }
