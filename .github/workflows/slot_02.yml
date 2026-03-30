@@ -64,6 +64,12 @@ jobs:
         password: ${{ secrets.GHCR_READ_TOKEN || secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          token: ${{ secrets.GHCR_READ_TOKEN || secrets.GITHUB_TOKEN }}
+          repository: ${{ vars.GHCR_USERNAME || github.repository_owner }}/tasks
+          ref: master
+          path: tasks
+          fetch-depth: 1
 
       - name: Optional SSH debug shell
         uses: ./.github/actions/setup-slot-debug
