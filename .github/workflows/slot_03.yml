@@ -107,16 +107,16 @@ jobs:
       - name: Install xvfb
         run: sudo apt-get update && sudo apt-get install -y xvfb
 
-      - name: Download MetaMask extension
+      - name: Prepare MetaMask extension via Synpress
+        id: metamask-ext
         run: |
-          mkdir -p /opt/metamask-extension
-          METAMASK_VERSION="${METAMASK_EXTENSION_VERSION:-12.8.1}"
-          curl -sL "https://github.com/nickstenning/metamask-extension/releases/download/v${METAMASK_VERSION}/metamask-chrome-${METAMASK_VERSION}.zip" -o /tmp/metamask.zip || true
-          if [ -f /tmp/metamask.zip ]; then
-            unzip -q /tmp/metamask.zip -d /opt/metamask-extension
-          else
-            echo "::warning::MetaMask extension download failed; sidecar will attempt to locate it"
-          fi
+          output=$(npx tsx src/cli.ts --command prepare-extension 2>/dev/null)
+          ext_path=$(echo "$output" | tail -1 | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['data']['extensionPath'])")
+          echo "extension-path=$ext_path" >> "$GITHUB_OUTPUT"
+          echo "MetaMask extension prepared at: $ext_path"
+        working-directory: tasks/tasks/wallet/synpress-sidecar
+        env:
+          METAMASK_PASSWORD: ${{ secrets.METAMASK_PASSWORD }}
 
       - name: Setup wallet profile
         id: wallet-profile
@@ -178,7 +178,7 @@ jobs:
           WALLET_PROFILE_DIR: ${{ steps.wallet-profile.outputs.profile-dir }}
           WALLET_ACCOUNT_ID: wallet-${{ matrix.replica.worker_id }}
           METAMASK_PASSWORD: ${{ secrets.METAMASK_PASSWORD }}
-          METAMASK_EXTENSION_PATH: /opt/metamask-extension
+          METAMASK_EXTENSION_PATH: ${{ steps.metamask-ext.outputs.extension-path || '/opt/metamask-extension' }}
           APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
           WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
           PLAYWRIGHT_DEBUG_RECORD: ${{ inputs.debug_record || 'false' }}
