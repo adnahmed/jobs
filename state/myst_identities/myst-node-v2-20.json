@@ -2,8 +2,5 @@
   "worker_id": "myst-node-v2-20",
   "identity_address": "0x176251a8bc80ff689cd0760ca3c80ec8d2a5868d",
   "passphrase_configured": false,
-  "keystore_files": {
-    "UTC--2026-03-24T22-43-35.005701062Z--176251a8bc80ff689cd0760ca3c80ec8d2a5868d": "{\"address\":\"176251a8bc80ff689cd0760ca3c80ec8d2a5868d\",\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"82240ff2aaa0a00db7d2dd4297be8139bae6d546a956ce3d891390a5b98b0f3d\",\"cipherparams\":{\"iv\":\"795135f2d5cdd4e1673b978e08c7e925\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":4096,\"p\":6,\"r\":8,\"salt\":\"c10f082ac5b86bccc796abd937d9224996366f4d368cbe752ffc65d7c2c36393\"},\"mac\":\"b977bce27de745e6dd3350533fcb04b937ee1b02a7a2c05450ebb79f759d2531\"},\"id\":\"34aebd64-f70f-4191-87b8-bd5998a31b5f\",\"version\":3}",
-    "remember.json": "{\"identity\":{\"address\":\"0x176251a8bc80ff689cd0760ca3c80ec8d2a5868d\"}}"
-  }
+  "secrets_encrypted": "1RmYWSKjKAaH65gqme4Bv+rQd4rfe9JWd5YmTzYGp/cKaE2sijUPIdJdhE1E1/IBuxBwZt0WMItgHO7YrzzXgCXbRIVYYTfu+fT/4NdFtKo7WRuWPJdZNPrDL0Oa+ENBdWHV0o3E1Ko7MPk62S4J6/K/Q4ECABUolO7IA8vzNQDb4HjaUOl+DIvuAVRZOM6hFrcA1FCmWFv9umSTW2pEmwbFUKHXFr8q/a+lc5Q8a+8Qi9P4HavJPR/T2RwgvJrh4ZZKRCsolQ5jh5EesnSIGmM+l1yawgwFXQ2/32Z/VbfvQyr1nIq2mrRtERcFyELoXUfqILzgMhXc6x+nGKB6rKiLdVMGFNit+J1Cyzb5W8K7uFby0UbdRSAiWR1wowDW59n/bYfnUO1OLZ77KQnbxgxhxDJXo2vv3XZlxzwUSabVz6DmI+wDjOjIX4hjIBoRwlDLQZvYRnvcYScyfXQnjJtxu4ALv53WF6aD92kvfxH2icfydFpUYXJ1Bi1Xd3bf7UFs18+yQIjHy09gxwHfjz2u/RaYh0pKjDSjWYkgbhe1hnTu0EjHtdROmXCy7NY38BT9793sGKo41DNdrFN8LHr8SFe41FF08FFHMDox2IaYbCL9W4p4qsk77ScqbNikL9WEzrJPrcqVSBLTMCUX1r9g3p5xw0+ZzkiKQp6r4UvoGjqz0Xo/jrqDGvCyM0e/P57MevTjx+tG6YzwSDLQKkTjAISP06jK8KIgNCp+WPEbpBkmNMzeTP3vUyxfNuQyU9HKiW/eJp7JzwkcBfra4fkuTXSaRGJk2hvwpf1wMpWAzJqCXyM6BRAqckd7SJIWjxLstUWZbSQIhc2XxKh8FSQAsNL4EhiEF9m06M0LLieOFEz7LQ15uvgxzmFZhHHJkY5TF7UxlTkzj64alK2jgcPO457IhwtAxB5T46KA0tCs3wzzOH60WTxt26CxlaiQxR9HFFrHbnJI52OozI10Ldepyd0bmzrDhh09do64NIjG38qt2axwslBgYuMsb3lR"
 }
