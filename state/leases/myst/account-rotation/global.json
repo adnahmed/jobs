@@ -2,19 +2,19 @@
   "schema_version": 1,
   "namespace": "myst/account-rotation",
   "lease_id": "global",
-  "revision": 76,
-  "status": "released",
-  "holder": "myst-node-v2-15",
-  "owner": "myst-node-v2-15",
+  "revision": 77,
+  "status": "active",
+  "holder": "myst-node-v2-17",
+  "owner": "myst-node-v2-17",
   "payload": {
     "failed_account_id": "slmkhanahmed",
     "failed_generation": 0,
-    "attempt": 3
+    "attempt": 1
   },
   "metadata": {
     "source": "myst_account_pool"
   },
   "created_at": "2026-03-30T06:21:53.488239Z",
-  "updated_at": "2026-03-30T21:32:34.588580Z",
-  "lease_expires_at": "2026-03-30T21:32:34.588582Z"
+  "updated_at": "2026-03-30T22:03:14.210504Z",
+  "lease_expires_at": "2026-03-30T22:08:14.210504Z"
 }
