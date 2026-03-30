@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/workers",
   "actor_id": "myst-node-v2-01",
-  "revision": 144,
+  "revision": 145,
   "status": "working",
   "owner": "myst-node-v2-01",
   "payload": {
@@ -12,11 +12,11 @@
     "workflow_run_attempt": "1",
     "workflow_job_id": "",
     "workflow_job_name": "myst-node-v2-01",
-    "progress": "events:409",
+    "progress": "events:411",
     "shard": "myst",
     "serving": false
   },
   "metadata": {},
-  "observed_at": "2026-03-30T02:04:54.627461Z",
-  "expires_at": "2026-03-30T02:14:54.627461Z"
+  "observed_at": "2026-03-30T02:07:56.327656Z",
+  "expires_at": "2026-03-30T02:17:56.327656Z"
 }
