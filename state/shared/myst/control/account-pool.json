@@ -2,21 +2,21 @@
   "schema_version": 1,
   "namespace": "myst/control",
   "record_id": "account-pool",
-  "revision": 28,
+  "revision": 29,
   "status": "active",
   "payload": {
     "active_account_id": "slmkhanahmed",
     "active_generation": 0,
-    "next_wallet_index": 28,
+    "next_wallet_index": 29,
     "bootstrap_completed": true,
     "bootstrap_account_id": "slmkhanahmed",
-    "updated_by": "myst-node-v2-13",
-    "updated_at": "2026-03-30T17:52:27.366993+00:00"
+    "updated_by": "myst-node-v2-19",
+    "updated_at": "2026-03-30T17:59:28.408091+00:00"
   },
   "secrets_encrypted": "",
-  "owner": "myst-node-v2-13",
+  "owner": "myst-node-v2-19",
   "created_at": "2026-03-30T06:21:55.767635Z",
-  "updated_at": "2026-03-30T17:52:27.367043Z",
+  "updated_at": "2026-03-30T17:59:28.408153Z",
   "lease": null,
   "tags": [
     "myst",
@@ -26,6 +26,6 @@
   "metadata": {
     "active_account_id": "slmkhanahmed",
     "active_generation": 0,
-    "next_wallet_index": 28
+    "next_wallet_index": 29
   }
 }
