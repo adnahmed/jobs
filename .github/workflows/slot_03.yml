@@ -143,6 +143,10 @@ jobs:
           MYST_EMAIL: ${{ secrets['MYST_EMAIL'] }}
           MYST_IDENTITY_PASSPHRASE: ${{ secrets['MYST_IDENTITY_PASSPHRASE'] }}
           MYST_PASSWORD: ${{ secrets['MYST_PASSWORD'] }}
+          EMAIL_WORKER_DOMAIN: ${{ secrets['EMAIL_WORKER_DOMAIN'] }}
+          EMAIL_API_KEY: ${{ secrets['EMAIL_API_KEY'] }}
+          EMAIL_DOMAIN: ${{ secrets['EMAIL_DOMAIN'] }}
+          SEED_PHRASE: ${{ secrets['SEED_PHRASE'] }}
           APP_LOG_LEVEL: ${{ inputs.log_level || 'INFO' }}
           WORKER_IMPORT_DEBUG: ${{ inputs.worker_import_debug || 'false' }}
           PLAYWRIGHT_DEBUG_RECORD: ${{ inputs.debug_record || 'false' }}
