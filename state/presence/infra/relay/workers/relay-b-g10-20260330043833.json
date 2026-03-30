@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "infra/relay/workers",
   "actor_id": "relay-b-g10-20260330043833",
-  "revision": 71,
+  "revision": 72,
   "status": "working",
   "owner": "relay-b-g10-20260330043833",
   "payload": {
@@ -24,6 +24,6 @@
     "serving": true
   },
   "metadata": {},
-  "observed_at": "2026-03-30T08:12:08.855484Z",
-  "expires_at": "2026-03-30T08:22:08.855484Z"
+  "observed_at": "2026-03-30T08:15:26.136423Z",
+  "expires_at": "2026-03-30T08:25:26.136423Z"
 }
