@@ -58,6 +58,9 @@ jobs:
       - name: Sync relay worker dependencies
         run: uv sync --project "$GITHUB_WORKSPACE/tasks" --frozen
 
+      - name: Install relay native build dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends uuid-dev unixodbc-dev
+
       - name: Install relay npm dependencies
         run: npm ci --no-fund --no-audit
         working-directory: ${{ github.workspace }}/tasks/shared-state-relay
