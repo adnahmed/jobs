@@ -6,7 +6,7 @@
   "workflow_job_id": "",
   "workflow_job_name": "relay-b-g11-20260330090904",
   "worker_type": "shared_state_relay",
-  "last_seen": "2026-03-30T11:27:00.154695Z",
+  "last_seen": "2026-03-30T11:30:05.084214Z",
   "phase": "working",
   "progress": "events:1",
   "actions_today": 0,
