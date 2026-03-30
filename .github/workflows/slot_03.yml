@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       replicas_json:
-        description: "JSON array of slot replicas, e.g. [{\"worker_id\":\"myst-node-v2-01\",\"shard\":\"myst\"}]"
+        description: 'JSON array of slot replicas, e.g. [{"worker_id":"myst-node-v2-01","shard":"myst"}]'
         required: true
         type: string
       log_level:
@@ -26,17 +26,17 @@ on:
         description: "Enable Playwright trace recording"
         required: false
         type: boolean
-        default: false
+        default: true
       debug_video:
         description: "Enable Playwright video recording (shows mouse movement)"
         required: false
         type: boolean
-        default: false
+        default: true
       debug_llm_transcript:
         description: "Enable LLM transcript capture (prompts, replies, tool calls)"
         required: false
         type: boolean
-        default: false
+        default: true
 
 permissions:
   contents: write
