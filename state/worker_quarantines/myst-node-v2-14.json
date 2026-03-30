@@ -1,0 +1,12 @@
+{
+  "worker_id": "myst-node-v2-14",
+  "worker_type": "myst_node",
+  "identity_address": "0xd45b6344ff8e9b0586fe0cc4685b1ee33692ac16",
+  "blocked_category": "business_rule_blocked",
+  "reason_code": "myst_account_pool_unavailable",
+  "reason": "Myst account rotation exhausted retries after the active shared account hit the free registration limit",
+  "source_run_id": "23743255574-1-myst-node-v2-14",
+  "manual_clear_required": true,
+  "first_detected_at": "2026-03-30T12:39:30.246852Z",
+  "last_detected_at": "2026-03-30T12:39:30.246852Z"
+}
