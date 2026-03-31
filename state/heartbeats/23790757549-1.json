@@ -6,7 +6,7 @@
   "workflow_job_id": "",
   "workflow_job_name": "work",
   "worker_type": "job_alert_scanner",
-  "last_seen": "2026-03-31T09:39:33.677563Z",
+  "last_seen": "2026-03-31T09:42:36.430472Z",
   "phase": "working",
   "progress": "events:1",
   "actions_today": 0,
