@@ -1,0 +1,19 @@
+{
+  "worker_id": "relay-b-g17-20260331041303",
+  "run_id": "",
+  "workflow_run_id": "23780103882",
+  "workflow_run_attempt": "1",
+  "workflow_job_id": "69290579404",
+  "workflow_job_name": "relay-b-g17-20260331041303",
+  "worker_type": "shared_state_relay",
+  "workflow_file": "slot_04.yml",
+  "workflow_inputs": {
+    "replicas_json": "[{\"worker_id\":\"relay-a-g18-20260331041303\",\"shard\":\"{\\\"lane_id\\\":\\\"relay-a\\\",\\\"peer_url\\\":\\\"https://relay-a.adnahmed.us.kg/\\\",\\\"peer_urls_json\\\":\\\"[\\\\\\\"https://relay-a.adnahmed.us.kg/\\\\\\\",\\\\\\\"https://relay-b.adnahmed.us.kg/\\\\\\\"]\\\",\\\"predecessor_instance_id\\\":\\\"\\\",\\\"handoff_generation\\\":18}\",\"handoff_target_id\":\"relay-a\",\"handoff_instance_id\":\"relay-a-g18-20260331041303\"},{\"worker_id\":\"relay-b-g17-20260331041303\",\"shard\":\"{\\\"lane_id\\\":\\\"relay-b\\\",\\\"peer_url\\\":\\\"https://relay-b.adnahmed.us.kg/\\\",\\\"peer_urls_json\\\":\\\"[\\\\\\\"https://relay-a.adnahmed.us.kg/\\\\\\\",\\\\\\\"https://relay-b.adnahmed.us.kg/\\\\\\\"]\\\",\\\"predecessor_instance_id\\\":\\\"\\\",\\\"handoff_generation\\\":17}\",\"handoff_target_id\":\"relay-b\",\"handoff_instance_id\":\"relay-b-g17-20260331041303\"}]"
+  },
+  "ref": "master",
+  "handoff_target_id": "relay-b",
+  "handoff_instance_id": "relay-b-g17-20260331041303",
+  "handoff_predecessor_instance_id": "",
+  "handoff_successor_instance_id": "",
+  "recorded_at": "2026-03-31T04:13:10.249042Z"
+}
