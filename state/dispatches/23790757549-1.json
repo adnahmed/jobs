@@ -1,0 +1,17 @@
+{
+  "worker_id": "23790757549-1",
+  "run_id": "23790757549-1",
+  "workflow_run_id": "23790757549",
+  "workflow_run_attempt": "1",
+  "workflow_job_id": "",
+  "workflow_job_name": "work",
+  "worker_type": "job_alert_scanner",
+  "workflow_file": "slot_01.yml",
+  "workflow_inputs": {},
+  "ref": "main",
+  "handoff_target_id": "",
+  "handoff_instance_id": "",
+  "handoff_predecessor_instance_id": "",
+  "handoff_successor_instance_id": "",
+  "recorded_at": "2026-03-31T09:39:26.570915Z"
+}
