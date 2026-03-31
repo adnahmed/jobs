@@ -1,6 +1,6 @@
 {
   "worker_id": "relay-a-g19-20260331090910",
-  "run_id": "",
+  "run_id": "23789552064-1-relay-a-g19-20260331090910",
   "workflow_run_id": "23789552064",
   "workflow_run_attempt": "1",
   "workflow_job_id": "69321242541",
@@ -8,12 +8,14 @@
   "worker_type": "shared_state_relay",
   "workflow_file": "slot_04.yml",
   "workflow_inputs": {
-    "replicas_json": "[{\"worker_id\":\"relay-a-g19-20260331090910\",\"shard\":\"{\\\"lane_id\\\":\\\"relay-a\\\",\\\"peer_url\\\":\\\"https://relay-a.adnahmed.us.kg/\\\",\\\"peer_urls_json\\\":\\\"[\\\\\\\"https://relay-a.adnahmed.us.kg/\\\\\\\",\\\\\\\"https://relay-b.adnahmed.us.kg/\\\\\\\"]\\\",\\\"predecessor_instance_id\\\":\\\"relay-a-g18-20260331041303\\\",\\\"handoff_generation\\\":19}\",\"handoff_target_id\":\"relay-a\",\"handoff_instance_id\":\"relay-a-g19-20260331090910\",\"handoff_predecessor_instance_id\":\"relay-a-g18-20260331041303\"}]"
+    "replicas_json": "[{\"worker_id\":\"relay-a-g19-20260331090910\",\"shard\":\"{\\\"lane_id\\\":\\\"relay-a\\\",\\\"peer_url\\\":\\\"https://relay-a.adnahmed.us.kg/\\\",\\\"peer_urls_json\\\":\\\"[\\\\\\\"https://relay-a.adnahmed.us.kg/\\\\\\\",\\\\\\\"https://relay-b.adnahmed.us.kg/\\\\\\\"]\\\",\\\"predecessor_instance_id\\\":\\\"relay-a-g18-20260331041303\\\",\\\"handoff_generation\\\":19}\",\"handoff_target_id\":\"relay-a\",\"handoff_instance_id\":\"relay-a-g19-20260331090910\",\"handoff_predecessor_instance_id\":\"relay-a-g18-20260331041303\"}]",
+    "log_level": "INFO",
+    "worker_import_debug": "false"
   },
-  "ref": "master",
-  "handoff_target_id": "relay-a",
-  "handoff_instance_id": "relay-a-g19-20260331090910",
-  "handoff_predecessor_instance_id": "relay-a-g18-20260331041303",
+  "ref": "refs/heads/master",
+  "handoff_target_id": "",
+  "handoff_instance_id": "",
+  "handoff_predecessor_instance_id": "",
   "handoff_successor_instance_id": "",
-  "recorded_at": "2026-03-31T09:09:16.694923Z"
+  "recorded_at": "2026-03-31T09:10:01.442140Z"
 }
