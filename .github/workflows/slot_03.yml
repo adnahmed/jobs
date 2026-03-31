@@ -110,8 +110,8 @@ jobs:
       - name: Prepare MetaMask extension via Synpress
         id: metamask-ext
         run: |
-          output=$(npx tsx src/cli.ts --command prepare-extension 2>/dev/null)
-          ext_path=$(echo "$output" | tail -1 | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['data']['extensionPath'])")
+          output=$(npx tsx index.ts prepare-extension)
+          ext_path=$(echo "$output" | tail -n1 | tr -d '\r')
           echo "extension-path=$ext_path" >> "$GITHUB_OUTPUT"
           echo "MetaMask extension prepared at: $ext_path"
         working-directory: tasks/tasks/wallet/synpress-sidecar
