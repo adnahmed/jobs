@@ -51,12 +51,12 @@ runs:
         AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
       run: |
         ENDPOINT="https://${{ inputs.r2-account-id }}.r2.cloudflarestorage.com"
-        ARCHIVE_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar.gpg"
+        ARCHIVE_PATH="${{ inputs.profiles-root }}/wallet-main.tar.gpg"
         mkdir -p "${{ inputs.profiles-root }}"
 
         echo "Downloading profile archive from R2..."
         aws s3 cp \
-          "s3://${{ inputs.r2-bucket }}/${{ inputs.account-id }}.tar.gpg" \
+          "s3://${{ inputs.r2-bucket }}/wallet-main.tar.gpg" \
           "${ARCHIVE_PATH}" \
           --endpoint-url "${ENDPOINT}" \
           --no-progress
@@ -71,9 +71,9 @@ runs:
       id: extract
       shell: bash
       run: |
-        ARCHIVE_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar.gpg"
-        TAR_PATH="${{ inputs.profiles-root }}/${{ inputs.account-id }}.tar"
-        PROFILE_DIR="${{ inputs.profiles-root }}/${{ inputs.account-id }}"
+        ARCHIVE_PATH="${{ inputs.profiles-root }}/wallet-main.tar.gpg"
+        TAR_PATH="${{ inputs.profiles-root }}/wallet-main.tar"
+        PROFILE_DIR="${{ inputs.profiles-root }}/wallet-main"
 
         echo "Decrypting profile archive..."
         gpg --batch --yes \
