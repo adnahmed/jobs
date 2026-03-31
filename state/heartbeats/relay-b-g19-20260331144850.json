@@ -6,7 +6,7 @@
   "workflow_job_id": "",
   "workflow_job_name": "relay-b-g19-20260331144850",
   "worker_type": "shared_state_relay",
-  "last_seen": "2026-03-31T14:49:54.799671Z",
+  "last_seen": "2026-03-31T14:53:04.512516Z",
   "phase": "working",
   "progress": "events:1",
   "actions_today": 0,
@@ -24,5 +24,5 @@
   "predecessor_instance_id": "",
   "successor_instance_id": "",
   "peer_url": "https://relay-b.adnahmed.us.kg",
-  "serving": false
+  "serving": true
 }
