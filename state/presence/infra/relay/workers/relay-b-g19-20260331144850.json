@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "namespace": "infra/relay/workers",
+  "actor_id": "relay-b-g19-20260331144850",
+  "revision": 1,
+  "status": "working",
+  "owner": "relay-b-g19-20260331144850",
+  "payload": {
+    "run_id": "23803656023-1-relay-b-g19-20260331144850",
+    "worker_type": "shared_state_relay",
+    "workflow_run_id": "23803656023",
+    "workflow_run_attempt": "1",
+    "workflow_job_id": "",
+    "workflow_job_name": "relay-b-g19-20260331144850",
+    "progress": "events:1",
+    "shard": "{\"lane_id\":\"relay-b\",\"peer_url\":\"https://relay-b.adnahmed.us.kg/\",\"peer_urls_json\":\"[\\\"https://relay-a.adnahmed.us.kg/\\\",\\\"https://relay-b.adnahmed.us.kg/\\\"]\",\"predecessor_instance_id\":\"\",\"handoff_generation\":19}",
+    "lane_id": "relay-b",
+    "instance_id": "relay-b-g19-20260331144850",
+    "handoff_target_id": "relay-b",
+    "handoff_instance_id": "relay-b-g19-20260331144850",
+    "peer_url": "https://relay-b.adnahmed.us.kg",
+    "expected_timeout_at": "2026-03-31T20:19:46.408086+00:00",
+    "started_at": "2026-03-31T14:49:46.408086+00:00",
+    "serving": false
+  },
+  "metadata": {},
+  "observed_at": "2026-03-31T14:50:00.335109Z",
+  "expires_at": "2026-03-31T15:00:00.335109Z"
+}
