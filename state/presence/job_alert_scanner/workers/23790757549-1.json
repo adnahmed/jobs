@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "namespace": "job_alert_scanner/workers",
+  "actor_id": "23790757549-1",
+  "revision": 1,
+  "status": "working",
+  "owner": "23790757549-1",
+  "payload": {
+    "run_id": "23790757549-1",
+    "worker_type": "job_alert_scanner",
+    "workflow_run_id": "23790757549",
+    "workflow_run_attempt": "1",
+    "workflow_job_id": "",
+    "workflow_job_name": "work",
+    "progress": "events:1",
+    "shard": "daily-scan",
+    "serving": false
+  },
+  "metadata": {},
+  "observed_at": "2026-03-31T09:39:35.058599Z",
+  "expires_at": "2026-03-31T09:49:35.058599Z"
+}
