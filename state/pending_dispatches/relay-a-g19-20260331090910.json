@@ -1,0 +1,15 @@
+{
+  "worker_id": "relay-a-g19-20260331090910",
+  "worker_type": "shared_state_relay",
+  "shard": "{\"lane_id\":\"relay-a\",\"peer_url\":\"https://relay-a.adnahmed.us.kg/\",\"peer_urls_json\":\"[\\\"https://relay-a.adnahmed.us.kg/\\\",\\\"https://relay-b.adnahmed.us.kg/\\\"]\",\"predecessor_instance_id\":\"relay-a-g18-20260331041303\",\"handoff_generation\":19}",
+  "workflow_run_id": "",
+  "workflow_run_attempt": "",
+  "workflow_job_id": "",
+  "workflow_job_name": "",
+  "run_id": "",
+  "handoff_target_id": "relay-a",
+  "handoff_instance_id": "relay-a-g19-20260331090910",
+  "handoff_predecessor_instance_id": "relay-a-g18-20260331041303",
+  "handoff_successor_instance_id": "",
+  "requested_at": "2026-03-31T09:09:11.055199Z"
+}
