@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "infra/relay/workers",
   "actor_id": "relay-a-g20-20260331144850",
-  "revision": 1,
+  "revision": 2,
   "status": "working",
   "owner": "relay-a-g20-20260331144850",
   "payload": {
@@ -21,9 +21,9 @@
     "peer_url": "https://relay-a.adnahmed.us.kg",
     "expected_timeout_at": "2026-03-31T20:19:59.646001+00:00",
     "started_at": "2026-03-31T14:49:59.646001+00:00",
-    "serving": false
+    "serving": true
   },
   "metadata": {},
-  "observed_at": "2026-03-31T14:50:33.156181Z",
-  "expires_at": "2026-03-31T15:00:33.156181Z"
+  "observed_at": "2026-03-31T14:53:44.675516Z",
+  "expires_at": "2026-03-31T15:03:44.675516Z"
 }
