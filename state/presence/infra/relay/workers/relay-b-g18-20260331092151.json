@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "infra/relay/workers",
   "actor_id": "relay-b-g18-20260331092151",
-  "revision": 1,
+  "revision": 2,
   "status": "working",
   "owner": "relay-b-g18-20260331092151",
   "payload": {
@@ -23,9 +23,9 @@
     "expected_timeout_at": "2026-03-31T14:52:44.958453+00:00",
     "started_at": "2026-03-31T09:22:44.958453+00:00",
     "predecessor_instance_id": "relay-b-g17-20260331041303",
-    "serving": false
+    "serving": true
   },
   "metadata": {},
-  "observed_at": "2026-03-31T09:23:06.158176Z",
-  "expires_at": "2026-03-31T09:33:06.158176Z"
+  "observed_at": "2026-03-31T09:26:09.159854Z",
+  "expires_at": "2026-03-31T09:36:09.159854Z"
 }
