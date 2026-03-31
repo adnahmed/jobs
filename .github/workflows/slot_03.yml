@@ -147,6 +147,14 @@ jobs:
       - name: Verify Docker daemon
         run: docker info
 
+      - name: Verify Node and npx on PATH
+        run: |
+          set -euo pipefail
+          node --version
+          npm --version
+          command -v npx
+          npx --version
+
       - name: Run slot worker
         run: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
         env:
