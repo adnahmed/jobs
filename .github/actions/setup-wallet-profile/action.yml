@@ -84,7 +84,21 @@ runs:
         echo "Extracting profile..."
         rm -rf "${PROFILE_DIR}"
         mkdir -p "${PROFILE_DIR}"
-        tar --zstd -xf "${TAR_PATH}" -C "${PROFILE_DIR}"
+        # Try plain tar first; if that fails, attempt zstd-compressed extraction.
+        if tar -tf "${TAR_PATH}" >/dev/null 2>&1; then
+          echo "Archive looks like a plain tar; extracting with tar -xf"
+          tar -xf "${TAR_PATH}" -C "${PROFILE_DIR}"
+        else
+          echo "Plain tar extraction failed; trying zstd-compressed archive"
+          if tar --zstd -tf "${TAR_PATH}" >/dev/null 2>&1; then
+            echo "Detected zstd-compressed tar; extracting with tar --zstd -xf"
+            tar --zstd -xf "${TAR_PATH}" -C "${PROFILE_DIR}"
+          else
+            echo "::error::Failed to extract profile archive (neither plain tar nor zstd-compressed)"
+            rm -f "${ARCHIVE_PATH}" "${TAR_PATH}"
+            exit 1
+          fi
+        fi
 
         # Cleanup temp files
         rm -f "${ARCHIVE_PATH}" "${TAR_PATH}"
