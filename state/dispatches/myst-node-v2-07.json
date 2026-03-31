@@ -1,9 +1,9 @@
 {
   "worker_id": "myst-node-v2-07",
   "run_id": "23769703020-1-myst-node-v2-07",
-  "workflow_run_id": "23773976112",
+  "workflow_run_id": "23774206852",
   "workflow_run_attempt": "1",
-  "workflow_job_id": "69271544393",
+  "workflow_job_id": "69272276929",
   "workflow_job_name": "myst-node-v2-07",
   "worker_type": "myst_node",
   "workflow_file": "slot_03.yml",
@@ -15,5 +15,5 @@
   "handoff_instance_id": "",
   "handoff_predecessor_instance_id": "",
   "handoff_successor_instance_id": "",
-  "recorded_at": "2026-03-31T00:10:45.434015+00:00"
+  "recorded_at": "2026-03-31T00:18:52.407546+00:00"
 }
