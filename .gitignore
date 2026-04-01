@@ -53,3 +53,8 @@ htmlcov/
 # uv.lock is committed for reproducible builds
 
 tasks/
+
+# act
+.input
+.secrets
+.vars
