@@ -7,5 +7,11 @@
 # Reuse containers for faster iteration
 --reuse
 
+# Needed for Myst TUN setup and nested Docker access from workflow steps
+--container-options=--privileged
+
+# Enable artifact server for upload-artifact/download-artifact actions
+--artifact-server-path .artifacts
+
 # Default event
 --eventpath .github/act-event.json

@@ -1,0 +1,12 @@
+{
+    "act": true,
+    "inputs": {
+        "replicas_json": "[{\"worker_id\":\"myst-node-v2-01\",\"shard\":\"myst\"}]",
+        "log_level": "INFO",
+        "worker_import_debug": "false",
+        "debug_ssh": "false",
+        "debug_record": "false",
+        "debug_video": "false",
+        "debug_llm_transcript": "false"
+    }
+}
