@@ -140,6 +140,8 @@ jobs:
           PLAYWRIGHT_BROWSERS_PATH: /tmp/ms-playwright
 
       - name: Prepare Myst TUN device
+        # act containers may not provide modprobe/kernel module tooling; skip local act runs.
+        if: ${{ github.actor != 'nektos/act' }}
         run: |
           sudo modprobe tun
           sudo mkdir -p /dev/net
@@ -162,6 +164,8 @@ jobs:
 
       - name: Run slot worker
         run: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+        continue-on-error: true
+        id: run-worker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
