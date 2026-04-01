@@ -50,7 +50,7 @@ jobs:
   work:
     name: ${{ matrix.replica.worker_id }}
     if: >
-      github.event.act ||
+      github.actor == 'nektos/act' ||
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name ==
       github.event.pull_request.base.repo.full_name

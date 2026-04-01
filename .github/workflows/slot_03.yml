@@ -60,12 +60,13 @@ jobs:
       matrix:
         replica: ${{ fromJSON(inputs.replicas_json) }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: "Checkout tasks repository"
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        # if: ${{ github.actor != 'nektos/act' }}
         with:
           token: ${{ secrets.GHCR_READ_TOKEN || secrets.GITHUB_TOKEN }}
           repository: ${{ vars.GHCR_USERNAME || github.repository_owner }}/tasks
-          ref: master
+          #ref: master
           path: tasks
           fetch-depth: 1
 
