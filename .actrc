@@ -1,8 +1,9 @@
 # act configuration — nektos/act local workflow runner
 # https://github.com/nektos/act
 
-# Use medium Ubuntu image (includes common tools)
--P ubuntu-latest=catthehacker/ubuntu:act-latest
+# Use a full Ubuntu image to better match GitHub-hosted runners
+-P ubuntu-latest=catthehacker/ubuntu:full-24.04
+-P ubuntu-24.04=catthehacker/ubuntu:full-24.04
 
 # Reuse containers for faster iteration
 --reuse
