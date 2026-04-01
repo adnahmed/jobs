@@ -52,4 +52,4 @@ htmlcov/
 # ── uv lock (auto-generated) ──────────────────────────────────────────────
 # uv.lock is committed for reproducible builds
 
-tasks_work/
+tasks/
