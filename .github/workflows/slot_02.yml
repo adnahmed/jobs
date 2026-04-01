@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       replicas_json:
-        description: "JSON array of slot replicas, e.g. [{\"worker_id\":\"job-applier-01\",\"shard\":\"https://...\"}]"
+        description: 'JSON array of slot replicas, e.g. [{"worker_id":"job-applier-01","shard":"https://..."}]'
         required: true
         type: string
       log_level:
@@ -49,8 +49,12 @@ concurrency:
 jobs:
   work:
     name: ${{ matrix.replica.worker_id }}
+    if: >
+      github.event.act ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name ==
+      github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
-    if: github.repository_owner == github.actor
     timeout-minutes: 330
     environment: env-02
     strategy:

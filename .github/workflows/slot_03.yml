@@ -49,7 +49,11 @@ jobs:
   work:
     name: ${{ matrix.replica.worker_id }}
     runs-on: ubuntu-latest
-    if: github.repository_owner == github.actor
+    if: >
+      ${{ github.actor != 'nektos/act' }} ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name ==
+      github.event.pull_request.base.repo.full_name
     timeout-minutes: 330
     strategy:
       fail-fast: false
@@ -57,7 +61,6 @@ jobs:
         replica: ${{ fromJSON(inputs.replicas_json) }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           token: ${{ secrets.GHCR_READ_TOKEN || secrets.GITHUB_TOKEN }}
@@ -80,6 +83,7 @@ jobs:
             --permit-open 127.0.0.1:4450
 
       - name: Free disk space
+        if: ${{ github.actor != 'nektos/act' }}
         uses: endersonmenezes/free-disk-space@713d134e243b926eba4a5cce0cf608bfd1efb89a # v2
         with:
           remove_android: true

@@ -56,7 +56,11 @@ concurrency:
 jobs:
   work:
     runs-on: ubuntu-latest
-    if: github.repository_owner == github.actor
+    if: >
+      github.event.act ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name ==
+      github.event.pull_request.base.repo.full_name
     timeout-minutes: 330
     environment: env-01
     container:
@@ -121,4 +125,3 @@ jobs:
         uses: ./.github/actions/upload-slot-debug
         with:
           artifact-name: playwright-debug-${{ github.run_id }}-slot-01-scanner
-

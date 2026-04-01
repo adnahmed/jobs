@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       replicas_json:
-        description: "JSON array of relay replicas, e.g. [{\"worker_id\":\"relay-a-g01-...\",\"shard\":\"{...}\"}]"
+        description: 'JSON array of relay replicas, e.g. [{"worker_id":"relay-a-g01-...","shard":"{...}"}]'
         required: true
         type: string
       log_level:
@@ -30,7 +30,11 @@ jobs:
   work:
     name: ${{ matrix.replica.worker_id }}
     runs-on: ubuntu-latest
-    if: github.repository_owner == github.actor
+    if: >
+      github.event.act ||
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name ==
+      github.event.pull_request.base.repo.full_name
     timeout-minutes: 330
     strategy:
       fail-fast: false
