@@ -21,7 +21,7 @@ on:
         description: "Enable manual SSH debugging with upterm"
         required: false
         type: boolean
-        default: true
+        default: false
       debug_record:
         description: "Enable Playwright trace recording"
         required: false
