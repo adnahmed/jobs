@@ -58,3 +58,4 @@ tasks/
 .input
 .secrets
 .vars
+.artifacts

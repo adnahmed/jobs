@@ -180,9 +180,12 @@ jobs:
           npx --version
 
       - name: Run slot worker
-        run: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+        uses: ./.github/actions/run-until-stop
+        with:
+          command: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
+          stop-file: .act-stop
+          grace-seconds: "1"
         continue-on-error: true
-        id: run-worker
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHO_TOKEN: ${{ secrets.GHO_TOKEN }}

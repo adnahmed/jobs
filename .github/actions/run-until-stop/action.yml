@@ -1,0 +1,91 @@
+name: Run until stop file
+description: Run a command and, under act, stop it when a file appears
+
+inputs:
+  command:
+    description: Command to run
+    required: true
+  stop-file:
+    description: File to watch for; relative paths are resolved under GITHUB_WORKSPACE
+    required: false
+    default: .act-stop
+  signal:
+    description: Signal to send first
+    required: false
+    default: INT
+  grace-seconds:
+    description: Seconds to wait before TERM
+    required: false
+    default: "10"
+
+runs:
+  using: composite
+  steps:
+    - name: Run wrapped command
+      shell: bash
+      env:
+        INPUT_COMMAND: ${{ inputs.command }}
+        INPUT_STOP_FILE: ${{ inputs.stop-file }}
+        INPUT_SIGNAL: ${{ inputs.signal }}
+        INPUT_GRACE_SECONDS: ${{ inputs.grace-seconds }}
+      run: |
+        set -euo pipefail
+
+        command="${INPUT_COMMAND}"
+        stop_file="${INPUT_STOP_FILE:-.act-stop}"
+        signal_name="${INPUT_SIGNAL:-INT}"
+        grace_seconds="${INPUT_GRACE_SECONDS:-10}"
+
+        # Resolve relative stop file against the workspace
+        case "$stop_file" in
+          /*) ;;
+          *) stop_file="${GITHUB_WORKSPACE}/${stop_file}" ;;
+        esac
+
+        mkdir -p "$(dirname "$stop_file")"
+
+        if [ "${GITHUB_ACTOR:-}" != "nektos/act" ]; then
+          exec bash -lc "$command"
+        fi
+
+        rm -f "$stop_file"
+        echo "act mode: touch '$stop_file' to stop the process cleanly"
+
+        bash -lc "$command" &
+        pid=$!
+
+        watcher() {
+          while kill -0 "$pid" 2>/dev/null; do
+            if [ -f "$stop_file" ]; then
+              echo "Stop file detected; sending SIG${signal_name} to PID $pid"
+              kill "-${signal_name}" "$pid" 2>/dev/null || true
+
+              for _ in $(seq 1 "$grace_seconds"); do
+                kill -0 "$pid" 2>/dev/null || exit 0
+                sleep 1
+              done
+
+              echo "Process still alive; sending SIGTERM to PID $pid"
+              kill -TERM "$pid" 2>/dev/null || true
+              exit 0
+            fi
+            sleep 1
+          done
+        }
+
+        watcher &
+        watcher_pid=$!
+
+        rc=0
+        wait "$pid" || rc=$?
+
+        kill "$watcher_pid" 2>/dev/null || true
+        wait "$watcher_pid" 2>/dev/null || true
+
+        # Intentional local stop under act should not fail the step
+        if [ -f "$stop_file" ]; then
+          echo "Process was intentionally stopped under act; treating as success"
+          exit 0
+        fi
+
+        exit "$rc"
