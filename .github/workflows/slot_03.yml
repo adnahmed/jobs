@@ -109,8 +109,25 @@ jobs:
         run: npm ci
         working-directory: tasks/tasks/wallet/synpress-sidecar
 
-      - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+      - name: Install browser system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            xvfb \
+            libnspr4 \
+            libnss3 \
+            libatk-bridge2.0-0 \
+            libgtk-3-0 \
+            libgbm1 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libasound2t64 \
+            libatspi2.0-0 \
+            libcups2t64 \
+            libdrm2 \
+            libdbus-1-3
 
       - name: Prepare MetaMask extension via Synpress
         id: metamask-ext
