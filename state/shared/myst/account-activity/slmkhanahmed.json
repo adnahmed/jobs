@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/account-activity",
   "record_id": "slmkhanahmed",
-  "revision": 565,
+  "revision": 566,
   "status": "active",
   "payload": {
     "events": [
@@ -201,7 +201,7 @@
   "secrets_encrypted": "",
   "owner": "",
   "created_at": "2026-03-31T08:20:52.644261Z",
-  "updated_at": "2026-04-02T23:18:56.070606Z",
+  "updated_at": "2026-04-02T23:24:02.625535Z",
   "lease": null,
   "tags": [],
   "metadata": {}
