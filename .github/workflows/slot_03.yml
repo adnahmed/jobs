@@ -137,8 +137,6 @@ jobs:
           echo "extension-path=$ext_path" >> "$GITHUB_OUTPUT"
           echo "MetaMask extension prepared at: $ext_path"
         working-directory: tasks/tasks/wallet/synpress-sidecar
-        env:
-          METAMASK_PASSWORD: ${{ secrets.METAMASK_PASSWORD }}
 
       - name: Setup wallet profile
         id: wallet-profile
