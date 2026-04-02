@@ -180,13 +180,74 @@ jobs:
           npx --version
 
       - name: Run slot worker
-        uses: ./.github/actions/run-until-stop
-        with:
-          command: xvfb-run --auto-servernum uv run --project "$GITHUB_WORKSPACE/tasks" -m src worker
-          stop-file: .act-stop
-          grace-seconds: "1"
         continue-on-error: true
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "$WORKER_LOG_PATH")"
+          cd "$TASKS_PROJECT_DIR"
+
+          worker_cmd='xvfb-run --auto-servernum uv run --project . -m src worker'
+          stop_file="${GITHUB_WORKSPACE}/.act-stop"
+          actor_name="${GITHUB_ACTOR:-}"
+          is_act_run="false"
+
+          if [ "$actor_name" = "nektos/act" ] || [ -n "${ACT:-}" ]; then
+            is_act_run="true"
+          fi
+
+          echo "slot-worker wrapper: actor='${actor_name:-<unset>}' act='${ACT:-<unset>}' mode=$is_act_run stop_file='$stop_file' cwd=$(pwd)" | tee -a "$WORKER_LOG_PATH"
+
+          if [ "$is_act_run" != "true" ]; then
+            bash -lc "set -o pipefail; ${worker_cmd} 2>&1 | tee -a \"$WORKER_LOG_PATH\"; exit \${PIPESTATUS[0]}"
+            exit $?
+          fi
+
+          rm -f "$stop_file"
+          echo "act mode: touch '$stop_file' to stop the process cleanly" | tee -a "$WORKER_LOG_PATH"
+
+          bash -lc "set -o pipefail; ${worker_cmd} 2>&1 | tee -a \"$WORKER_LOG_PATH\"; exit \${PIPESTATUS[0]}" &
+          pid=$!
+          echo "slot-worker wrapper: started child pid=$pid" | tee -a "$WORKER_LOG_PATH"
+
+          while kill -0 "$pid" 2>/dev/null; do
+            if [ -f "$stop_file" ]; then
+              echo "slot-worker wrapper: stop file detected; sending SIGINT to PID $pid" | tee -a "$WORKER_LOG_PATH"
+              kill -INT "$pid" 2>/dev/null || true
+
+              for _ in $(seq 1 1); do
+                kill -0 "$pid" 2>/dev/null || break
+                sleep 1
+              done
+
+              if kill -0 "$pid" 2>/dev/null; then
+                echo "slot-worker wrapper: process still alive; sending SIGTERM to PID $pid" | tee -a "$WORKER_LOG_PATH"
+                kill -TERM "$pid" 2>/dev/null || true
+              fi
+              break
+            fi
+            sleep 1
+          done
+
+          rc=0
+          wait "$pid" || rc=$?
+
+          if [ -f "$stop_file" ]; then
+            stop_file_present="true"
+          else
+            stop_file_present="false"
+          fi
+          echo "slot-worker wrapper: child pid=$pid exited rc=$rc stop_file_present=$stop_file_present" | tee -a "$WORKER_LOG_PATH"
+
+          if [ -f "$stop_file" ]; then
+            echo "slot-worker wrapper: final_exit=0 reason=act_stop_file_detected" | tee -a "$WORKER_LOG_PATH"
+            exit 0
+          fi
+
+          echo "slot-worker wrapper: final_exit=$rc reason=child_process_exit" | tee -a "$WORKER_LOG_PATH"
+          exit "$rc"
         env:
+          WORKER_LOG_PATH: /tmp/worker-debug/worker-${{ github.run_id }}-${{ matrix.replica.worker_id }}.log
+          TASKS_PROJECT_DIR: ${{ github.workspace }}/tasks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GHO_TOKEN: ${{ secrets.GHO_TOKEN }}
           WORKER_TYPE: "myst_node"
