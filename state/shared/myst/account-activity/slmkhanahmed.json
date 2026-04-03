@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/account-activity",
   "record_id": "slmkhanahmed",
-  "revision": 651,
+  "revision": 652,
   "status": "active",
   "payload": {
     "events": [
@@ -265,13 +265,23 @@
         "connectivity_error_count": 0,
         "quality_band": "strong",
         "nat_status": "strict"
+      },
+      {
+        "at": "2026-04-03T14:11:58.394889Z",
+        "completed_session_count": 8,
+        "transferred_data_bytes_1d": 285278462,
+        "current_earnings_wei": 456856944377370417,
+        "automation_state": "degraded",
+        "connectivity_error_count": 0,
+        "quality_band": "strong",
+        "nat_status": "strict"
       }
     ]
   },
   "secrets_encrypted": "",
   "owner": "",
   "created_at": "2026-03-31T08:20:52.644261Z",
-  "updated_at": "2026-04-03T12:22:32.624726Z",
+  "updated_at": "2026-04-03T14:11:59.668146Z",
   "lease": null,
   "tags": [],
   "metadata": {}
