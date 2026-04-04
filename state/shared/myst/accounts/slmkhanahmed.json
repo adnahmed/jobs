@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/accounts",
   "record_id": "slmkhanahmed",
-  "revision": 151,
+  "revision": 152,
   "status": "saturated",
   "payload": {
     "account_id": "slmkhanahmed",
@@ -14,15 +14,15 @@
     "status": "saturated",
     "source": "bootstrap",
     "created_by": "myst-node-v2-01",
-    "saturated_reason": "The page states the mystnodes account has reached the free-node registration limit and requires the standard onboarding process, blocking automated completion.",
+    "saturated_reason": "MetaMask connection cannot proceed because the only selectable account matches the prohibited/saturated address and no alternative account is available.",
     "failure_reason": "",
     "created_at": "2026-03-30T06:21:53.344162+00:00",
-    "updated_at": "2026-04-04T02:23:44.436102+00:00"
+    "updated_at": "2026-04-04T14:02:19.705738+00:00"
   },
-  "secrets_encrypted": "5g7yDejFzS1Edvffd+ecog8UKNrCG3jHC4yHzRTGYUkqx3/UFh9Ts844rqV2GDEXA9qa4NcQNOWwZPQEw9bFgZzyc7Ur9lDHsXr4vn01nZu1pK3YAXmJ7epu3xfKePod",
-  "owner": "d17e85f64c0e",
+  "secrets_encrypted": "ecDf6nN8QhW18p20cCOORIUe4+Wif1zWGgKdlacockPcgmZBO2EyXMwQQR3SE2rRVtW/SMXcHujn4tUVXQiXBOJvrWV/AchVKEqLR5kz37cEhOLDL2NsGVDRcR/2G1oc",
+  "owner": "b3043c801f89",
   "created_at": "2026-03-30T06:21:54.780456Z",
-  "updated_at": "2026-04-04T02:23:44.436326Z",
+  "updated_at": "2026-04-04T14:02:19.705919Z",
   "lease": null,
   "tags": [
     "myst",
