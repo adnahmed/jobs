@@ -2,8 +2,8 @@
   "schema_version": 1,
   "namespace": "myst/account-rotation",
   "lease_id": "global",
-  "revision": 101,
-  "status": "active",
+  "revision": 102,
+  "status": "released",
   "holder": "b3043c801f89",
   "owner": "b3043c801f89",
   "payload": {
@@ -15,6 +15,6 @@
     "source": "myst_account_pool"
   },
   "created_at": "2026-03-30T06:21:53.488239Z",
-  "updated_at": "2026-04-04T14:02:22.587624Z",
-  "lease_expires_at": "2026-04-04T14:07:22.587624Z"
+  "updated_at": "2026-04-04T14:03:53.179348Z",
+  "lease_expires_at": "2026-04-04T14:03:53.179351Z"
 }
