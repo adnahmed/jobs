@@ -2,7 +2,7 @@
   "schema_version": 1,
   "namespace": "myst/accounts",
   "record_id": "slmkhanahmed",
-  "revision": 152,
+  "revision": 153,
   "status": "saturated",
   "payload": {
     "account_id": "slmkhanahmed",
@@ -14,15 +14,15 @@
     "status": "saturated",
     "source": "bootstrap",
     "created_by": "myst-node-v2-01",
-    "saturated_reason": "MetaMask connection cannot proceed because the only selectable account matches the prohibited/saturated address and no alternative account is available.",
+    "saturated_reason": "MetaMask connect popup only lists the previously saturated account which the workflow forbids selecting, so the wallet connection cannot be approved.",
     "failure_reason": "",
     "created_at": "2026-03-30T06:21:53.344162+00:00",
-    "updated_at": "2026-04-04T14:02:19.705738+00:00"
+    "updated_at": "2026-04-04T15:22:29.037304+00:00"
   },
-  "secrets_encrypted": "ecDf6nN8QhW18p20cCOORIUe4+Wif1zWGgKdlacockPcgmZBO2EyXMwQQR3SE2rRVtW/SMXcHujn4tUVXQiXBOJvrWV/AchVKEqLR5kz37cEhOLDL2NsGVDRcR/2G1oc",
-  "owner": "b3043c801f89",
+  "secrets_encrypted": "+YeElYtSY/SqJs0NAw3mcmV1H////ecCxdXHbi/KRGsrv53xpeo4/X4jZriU8RS7uTQlXS/afptPgGfhB1UepffUkyD+AFtZ8wq+lN2VKAbLDDdr4ZbFFlxG4VKFdcGW",
+  "owner": "2693d39d9173",
   "created_at": "2026-03-30T06:21:54.780456Z",
-  "updated_at": "2026-04-04T14:02:19.705919Z",
+  "updated_at": "2026-04-04T15:22:29.037521Z",
   "lease": null,
   "tags": [
     "myst",
