@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "namespace": "myst/accounts",
+  "record_id": "myst-e32470eaadae4846",
+  "revision": 1,
+  "status": "provisioning",
+  "payload": {
+    "account_id": "myst-e32470eaadae4846",
+    "wallet_index": 56,
+    "wallet_address": "",
+    "persistent_profile_dir": "/tmp/pw-profiles/wallet-main",
+    "wallet_onboarding_status": "pending",
+    "generation": 1,
+    "status": "provisioning",
+    "source": "generated",
+    "created_by": "2693d39d9173",
+    "saturated_reason": "",
+    "failure_reason": "",
+    "created_at": "2026-04-04T15:22:38.575161+00:00",
+    "updated_at": "2026-04-04T15:22:38.575163+00:00"
+  },
+  "secrets_encrypted": "1SmLBPuHV+qSN/TsvHd9Y0Sm73qA2dBD4Us4Hq0bNmrp57i+rT9Ov4ei7cdx86GjZR09oHahbWcraZUOAOF8UjOZxJX+m2PHOdyrGIGzqSkoW01/VmaVzgpFHTpeBYUu",
+  "owner": "2693d39d9173",
+  "created_at": "2026-04-04T15:22:40.174053Z",
+  "updated_at": "2026-04-04T15:22:40.174092Z",
+  "lease": null,
+  "tags": [
+    "myst",
+    "account_pool"
+  ],
+  "metadata": {
+    "wallet_index": 56,
+    "wallet_address": "",
+    "persistent_profile_dir": "/tmp/pw-profiles/wallet-main",
+    "wallet_onboarding_status": "pending",
+    "generation": 1,
+    "source": "generated"
+  }
+}
